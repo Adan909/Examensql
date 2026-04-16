@@ -1,0 +1,122 @@
+/* ============================================================
+CASO DE ESTUDIO: SISTEMA DE CONTROL DE VENTAS (ACTUALIZADO)
+============================================================
+*/
+
+-- 🔹 PARTE 1: CREACIÓN DE LA BASE DE DATOS
+USE master;
+GO
+
+IF EXISTS (SELECT name FROM sys.databases WHERE name = 'TiendaComercial')
+BEGIN
+    DROP DATABASE TiendaComercial;
+END
+GO
+
+CREATE DATABASE TiendaComercial;
+GO
+
+USE TiendaComercial;
+GO
+
+-- 🔹 PARTE 2: CREACIÓN DE TABLAS CON LLAVES PRIMARIAS Y FORÁNEAS
+-- Tabla de Clientes
+CREATE TABLE Clientes (
+    ClienteID INT PRIMARY KEY IDENTITY(1,1),
+    Nombre VARCHAR(100) NOT NULL,
+    Ciudad VARCHAR(50),
+    Email VARCHAR(100)
+);
+
+-- Tabla de Productos
+CREATE TABLE Productos (
+    ProductoID INT PRIMARY KEY IDENTITY(1,1),
+    NombreProducto VARCHAR(100) NOT NULL,
+    Categoria VARCHAR(50),
+    Precio DECIMAL(10, 2) NOT NULL
+);
+
+-- Tabla de Ventas (Incluye la columna de dinero ganado/subtotal)
+CREATE TABLE Ventas (
+    VentaID INT PRIMARY KEY IDENTITY(1,1),
+    ClienteID INT NOT NULL,
+    ProductoID INT NOT NULL,
+    FechaVenta DATE NOT NULL,
+    Cantidad INT NOT NULL,
+    Subtotal DECIMAL(10, 2) NOT NULL, -- Columna de dinero ganado
+    
+    CONSTRAINT FK_Venta_Cliente FOREIGN KEY (ClienteID) REFERENCES Clientes(ClienteID),
+    CONSTRAINT FK_Venta_Producto FOREIGN KEY (ProductoID) REFERENCES Productos(ProductoID)
+);
+GO
+
+-- 🔹 PARTE 3: INSERCIÓN DE DATOS (20 registros por tabla)
+
+-- Insertar 20 Clientes
+INSERT INTO Clientes (Nombre, Ciudad, Email) VALUES 
+('Juan Perez', 'Managua', 'juan@email.com'), ('Maria Lopez', 'Leon', 'maria@email.com'),
+('Carlos Ruiz', 'Granada', 'carlos@email.com'), ('Ana Garcia', 'Masaya', 'ana@email.com'),
+('Luis Mora', 'Managua', 'luis@email.com'), ('Elena Solis', 'Leon', 'elena@email.com'),
+('Pedro Arce', 'Esteli', 'pedro@email.com'), ('Lucia Diaz', 'Managua', 'lucia@email.com'),
+('Roberto Cano', 'Granada', 'roberto@email.com'), ('Sofia Vivas', 'Masaya', 'sofia@email.com'),
+('Jorge Luna', 'Chinandega', 'jorge@email.com'), ('Marta Rivas', 'Leon', 'marta@email.com'),
+('Raul Castro', 'Managua', 'raul@email.com'), ('Silvia Meza', 'Esteli', 'silvia@email.com'),
+('Oscar Ortiz', 'Jinotega', 'oscar@email.com'), ('Rosa Mendez', 'Managua', 'rosa@email.com'),
+('Hugo Torres', 'Leon', 'hugo@email.com'), ('Diana Paz', 'Granada', 'diana@email.com'),
+('Ivan Rios', 'Masaya', 'ivan@email.com'), ('Beatriz Saenz', 'Managua', 'beatriz@email.com');
+
+-- Insertar 20 Productos
+INSERT INTO Productos (NombreProducto, Categoria, Precio) VALUES 
+('Laptop Pro', 'Electronica', 1200.00), ('Smartphone X', 'Electronica', 800.00),
+('Teclado RGB', 'Accesorios', 45.00), ('Mouse Optico', 'Accesorios', 25.00),
+('Monitor 24"', 'Electronica', 180.00), ('Audifonos BT', 'Audio', 60.00),
+('Impresora Laser', 'Oficina', 210.00), ('Silla Ergonomica', 'Muebles', 150.00),
+('Escritorio Wood', 'Muebles', 300.00), ('Tablet 10"', 'Electronica', 250.00),
+('Camara Web HD', 'Video', 75.00), ('Disco Externo 1TB', 'Almacenamiento', 90.00),
+('Memoria USB 64GB', 'Almacenamiento', 15.00), ('Router WiFi 6', 'Redes', 120.00),
+('Bocina Inteligente', 'Audio', 55.00), ('Lampara LED', 'Hogar', 35.00),
+('Cable HDMI 2m', 'Cables', 12.00), ('Mochila Laptop', 'Accesorios', 40.00),
+('Microfono Condensador', 'Audio', 110.00), ('Power Bank', 'Accesorios', 30.00);
+
+-- Insertar 20 Ventas (Cálculo manual del Subtotal para los registros iniciales)
+INSERT INTO Ventas (ClienteID, ProductoID, FechaVenta, Cantidad, Subtotal) VALUES 
+(1, 1, '2026-04-01', 1, 1200.00), (2, 5, '2026-04-01', 2, 360.00),
+(3, 2, '2026-04-02', 1, 800.00), (4, 10, '2026-04-02', 1, 250.00),
+(5, 3, '2026-04-03', 3, 135.00), (6, 15, '2026-04-03', 2, 110.00),
+(7, 8, '2026-04-04', 1, 150.00), (8, 20, '2026-04-04', 5, 150.00),
+(9, 7, '2026-04-05', 1, 210.00), (10, 4, '2026-04-05', 4, 100.00),
+(11, 12, '2026-04-06', 2, 180.00), (12, 1, '2026-04-06', 1, 1200.00),
+(13, 18, '2026-04-07', 2, 80.00), (14, 6, '2026-04-07', 1, 60.00),
+(15, 9, '2026-04-08', 1, 300.00), (16, 11, '2026-04-08', 3, 225.00),
+(17, 14, '2026-04-09', 1, 120.00), (18, 19, '2026-04-09', 1, 110.00),
+(19, 13, '2026-04-10', 10, 150.00), (20, 17, '2026-04-10', 2, 24.00);
+GO
+
+-- 🔹 PARTE 4: CONSULTAS DE ANÁLISIS (Mínimo 6)
+
+-- 1. SELECT *: Ver listado completo de clientes
+SELECT * FROM Clientes;
+
+-- 2. WHERE: Productos de la categoría 'Electronica' con precio mayor a 500
+SELECT * FROM Productos 
+WHERE Categoria = 'Electronica' AND Precio > 500;
+
+-- 3. LIKE: Buscar clientes cuyo email sea de dominio 'email.com'
+SELECT Nombre, Email FROM Clientes 
+WHERE Email LIKE '%@email.com';
+
+-- 4. JOIN: Reporte detallado de ventas con el dinero ganado por transacción
+SELECT V.VentaID, C.Nombre AS Cliente, P.NombreProducto, V.Cantidad, V.Subtotal AS DineroGanado
+FROM Ventas V
+JOIN Clientes C ON V.ClienteID = C.ClienteID
+JOIN Productos P ON V.ProductoID = P.ProductoID;
+
+-- 5. GROUP BY & Funciones Agregadas: Total de ingresos generados por cada categoría
+SELECT P.Categoria, SUM(V.Subtotal) AS TotalVentasPorCategoria, COUNT(V.VentaID) AS NumeroVentas
+FROM Ventas V
+JOIN Productos P ON V.ProductoID = P.ProductoID
+GROUP BY P.Categoria;
+
+-- 6. ORDER BY: Ventas ordenadas por la fecha más reciente
+SELECT * FROM Ventas 
+ORDER BY FechaVenta DESC;
