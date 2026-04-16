@@ -1,9 +1,8 @@
 /* ============================================================
-CASO DE ESTUDIO: SISTEMA DE CONTROL DE VENTAS (ACTUALIZADO)
+SISTEMA DE CONTROL DE VENTAS - VERSIÓN FINAL (50 REGISTROS)
 ============================================================
 */
-
--- 🔹 PARTE 1: CREACIÓN DE LA BASE DE DATOS
+|
 USE master;
 GO
 
@@ -19,8 +18,7 @@ GO
 USE TiendaComercial;
 GO
 
--- 🔹 PARTE 2: CREACIÓN DE TABLAS CON LLAVES PRIMARIAS Y FORÁNEAS
--- Tabla de Clientes
+-- 🔹 PARTE 2: TABLAS
 CREATE TABLE Clientes (
     ClienteID INT PRIMARY KEY IDENTITY(1,1),
     Nombre VARCHAR(100) NOT NULL,
@@ -28,7 +26,6 @@ CREATE TABLE Clientes (
     Email VARCHAR(100)
 );
 
--- Tabla de Productos
 CREATE TABLE Productos (
     ProductoID INT PRIMARY KEY IDENTITY(1,1),
     NombreProducto VARCHAR(100) NOT NULL,
@@ -36,87 +33,43 @@ CREATE TABLE Productos (
     Precio DECIMAL(10, 2) NOT NULL
 );
 
--- Tabla de Ventas (Incluye la columna de dinero ganado/subtotal)
 CREATE TABLE Ventas (
     VentaID INT PRIMARY KEY IDENTITY(1,1),
     ClienteID INT NOT NULL,
     ProductoID INT NOT NULL,
     FechaVenta DATE NOT NULL,
     Cantidad INT NOT NULL,
-    Subtotal DECIMAL(10, 2) NOT NULL, -- Columna de dinero ganado
+    Subtotal DECIMAL(10, 2) NOT NULL, 
     
     CONSTRAINT FK_Venta_Cliente FOREIGN KEY (ClienteID) REFERENCES Clientes(ClienteID),
     CONSTRAINT FK_Venta_Producto FOREIGN KEY (ProductoID) REFERENCES Productos(ProductoID)
 );
 GO
 
--- 🔹 PARTE 3: INSERCIÓN DE DATOS (20 registros por tabla)
+-- 🔹 PARTE 3: INSERCIÓN DE DATOS (50 REGISTROS POR TABLA)
 
--- Insertar 20 Clientes
+-- 1. Insertar 50 Clientes
 INSERT INTO Clientes (Nombre, Ciudad, Email) VALUES 
-('Juan Perez', 'Managua', 'juan@email.com'), ('Maria Lopez', 'Leon', 'maria@email.com'),
-('Carlos Ruiz', 'Granada', 'carlos@email.com'), ('Ana Garcia', 'Masaya', 'ana@email.com'),
-('Luis Mora', 'Managua', 'luis@email.com'), ('Elena Solis', 'Leon', 'elena@email.com'),
-('Pedro Arce', 'Esteli', 'pedro@email.com'), ('Lucia Diaz', 'Managua', 'lucia@email.com'),
-('Roberto Cano', 'Granada', 'roberto@email.com'), ('Sofia Vivas', 'Masaya', 'sofia@email.com'),
-('Jorge Luna', 'Chinandega', 'jorge@email.com'), ('Marta Rivas', 'Leon', 'marta@email.com'),
-('Raul Castro', 'Managua', 'raul@email.com'), ('Silvia Meza', 'Esteli', 'silvia@email.com'),
-('Oscar Ortiz', 'Jinotega', 'oscar@email.com'), ('Rosa Mendez', 'Managua', 'rosa@email.com'),
-('Hugo Torres', 'Leon', 'hugo@email.com'), ('Diana Paz', 'Granada', 'diana@email.com'),
-('Ivan Rios', 'Masaya', 'ivan@email.com'), ('Beatriz Saenz', 'Managua', 'beatriz@email.com');
+('Juan Perez','Managua','juan@email.com'),('Maria Lopez','Leon','maria@email.com'),('Carlos Ruiz','Granada','carlos@email.com'),('Ana Garcia','Masaya','ana@email.com'),('Luis Mora','Managua','luis@email.com'),
+('Elena Solis','Leon','elena@email.com'),('Pedro Arce','Esteli','pedro@email.com'),('Lucia Diaz','Managua','lucia@email.com'),('Roberto Cano','Granada','roberto@email.com'),('Sofia Vivas','Masaya','sofia@email.com'),
+('Jorge Luna','Chinandega','jorge@email.com'),('Marta Rivas','Leon','marta@email.com'),('Raul Castro','Managua','raul@email.com'),('Silvia Meza','Esteli','silvia@email.com'),('Oscar Ortiz','Jinotega','oscar@email.com'),
+('Rosa Mendez','Managua','rosa@email.com'),('Hugo Torres','Leon','hugo@email.com'),('Diana Paz','Granada','diana@email.com'),('Ivan Rios','Masaya','ivan@email.com'),('Beatriz Saenz','Managua','beatriz@email.com'),
+('Fernando Gil','Matagalpa','fer@email.com'),('Gloria Soto','Chinandega','gloria@email.com'),('Héctor Paz','Managua','hector@email.com'),('Isabel Vera','Leon','isabel@email.com'),('Javier Marín','Rivas','javier@email.com'),
+('Karla Peña','Boaco','karla@email.com'),('Leonel Rivas','Managua','leonel@email.com'),('Miriam Blanco','Granada','miriam@email.com'),('Nelson Cruz','Esteli','nelson@email.com'),('Olga Delgado','Masaya','olga@email.com'),
+('Pablo Espinoza','Chinandega','pablo@email.com'),('Quenia Flores','Managua','quenia@email.com'),('Ricardo Gomez','Leon','ricardo@email.com'),('Sonia Huete','Granada','sonia@email.com'),('Tomas Ibarra','Masaya','tomas@email.com'),
+('Ulises Jara','Esteli','ulises@email.com'),('Valeria Kelly','Managua','valeria@email.com'),('Walter Lara','Leon','walter@email.com'),('Ximena Mora','Jinotega','ximena@email.com'),('Yader Noguera','Rivas','yader@email.com'),
+('Zeneida Orozco','Managua','zeneida@email.com'),('Adolfo Parajon','Chinandega','adolfo@email.com'),('Brenda Quintana','Leon','brenda@email.com'),('Cesar Reyes','Granada','cesar@email.com'),('Dora Silva','Masaya','dora@email.com'),
+('Enrique Tellez','Esteli','enrique@email.com'),('Fabiola Urbina','Managua','fabiola@email.com'),('Gustavo Valle','Matagalpa','gustavo@email.com'),('Hilda Wilson','Rivas','hilda@email.com'),('Isaac Zeledon','Jinotega','isaac@email.com');
 
--- Insertar 20 Productos
+-- 2. Insertar 50 Productos
 INSERT INTO Productos (NombreProducto, Categoria, Precio) VALUES 
-('Laptop Pro', 'Electronica', 1200.00), ('Smartphone X', 'Electronica', 800.00),
-('Teclado RGB', 'Accesorios', 45.00), ('Mouse Optico', 'Accesorios', 25.00),
-('Monitor 24"', 'Electronica', 180.00), ('Audifonos BT', 'Audio', 60.00),
-('Impresora Laser', 'Oficina', 210.00), ('Silla Ergonomica', 'Muebles', 150.00),
-('Escritorio Wood', 'Muebles', 300.00), ('Tablet 10"', 'Electronica', 250.00),
-('Camara Web HD', 'Video', 75.00), ('Disco Externo 1TB', 'Almacenamiento', 90.00),
-('Memoria USB 64GB', 'Almacenamiento', 15.00), ('Router WiFi 6', 'Redes', 120.00),
-('Bocina Inteligente', 'Audio', 55.00), ('Lampara LED', 'Hogar', 35.00),
-('Cable HDMI 2m', 'Cables', 12.00), ('Mochila Laptop', 'Accesorios', 40.00),
-('Microfono Condensador', 'Audio', 110.00), ('Power Bank', 'Accesorios', 30.00);
-
--- Insertar 20 Ventas (Cálculo manual del Subtotal para los registros iniciales)
-INSERT INTO Ventas (ClienteID, ProductoID, FechaVenta, Cantidad, Subtotal) VALUES 
-(1, 1, '2026-04-01', 1, 1200.00), (2, 5, '2026-04-01', 2, 360.00),
-(3, 2, '2026-04-02', 1, 800.00), (4, 10, '2026-04-02', 1, 250.00),
-(5, 3, '2026-04-03', 3, 135.00), (6, 15, '2026-04-03', 2, 110.00),
-(7, 8, '2026-04-04', 1, 150.00), (8, 20, '2026-04-04', 5, 150.00),
-(9, 7, '2026-04-05', 1, 210.00), (10, 4, '2026-04-05', 4, 100.00),
-(11, 12, '2026-04-06', 2, 180.00), (12, 1, '2026-04-06', 1, 1200.00),
-(13, 18, '2026-04-07', 2, 80.00), (14, 6, '2026-04-07', 1, 60.00),
-(15, 9, '2026-04-08', 1, 300.00), (16, 11, '2026-04-08', 3, 225.00),
-(17, 14, '2026-04-09', 1, 120.00), (18, 19, '2026-04-09', 1, 110.00),
-(19, 13, '2026-04-10', 10, 150.00), (20, 17, '2026-04-10', 2, 24.00);
-GO
-
--- 🔹 PARTE 4: CONSULTAS DE ANÁLISIS (Mínimo 6)
-
--- 1. SELECT *: Ver listado completo de clientes
-SELECT * FROM Clientes;
-
--- 2. WHERE: Productos de la categoría 'Electronica' con precio mayor a 500
-SELECT * FROM Productos 
-WHERE Categoria = 'Electronica' AND Precio > 500;
-
--- 3. LIKE: Buscar clientes cuyo email sea de dominio 'email.com'
-SELECT Nombre, Email FROM Clientes 
-WHERE Email LIKE '%@email.com';
-
--- 4. JOIN: Reporte detallado de ventas con el dinero ganado por transacción
-SELECT V.VentaID, C.Nombre AS Cliente, P.NombreProducto, V.Cantidad, V.Subtotal AS DineroGanado
-FROM Ventas V
-JOIN Clientes C ON V.ClienteID = C.ClienteID
-JOIN Productos P ON V.ProductoID = P.ProductoID;
-
--- 5. GROUP BY & Funciones Agregadas: Total de ingresos generados por cada categoría
-SELECT P.Categoria, SUM(V.Subtotal) AS TotalVentasPorCategoria, COUNT(V.VentaID) AS NumeroVentas
-FROM Ventas V
-JOIN Productos P ON V.ProductoID = P.ProductoID
-GROUP BY P.Categoria;
-
--- 6. ORDER BY: Ventas ordenadas por la fecha más reciente
-SELECT * FROM Ventas 
-ORDER BY FechaVenta DESC;
+('Laptop Pro','Electronica',1200),('Smartphone X','Electronica',800),('Teclado RGB','Accesorios',45),('Mouse Optico','Accesorios',25),('Monitor 24','Electronica',180),
+('Audifonos BT','Audio',60),('Impresora Laser','Oficina',210),('Silla Ergonomica','Muebles',150),('Escritorio Wood','Muebles',300),('Tablet 10','Electronica',250),
+('Camara Web HD','Video',75),('Disco Externo 1TB','Almacenamiento',90),('Memoria USB 64GB','Almacenamiento',15),('Router WiFi 6','Redes',120),('Bocina Inteligente','Audio',55),
+('Lampara LED','Hogar',35),('Cable HDMI 2m','Cables',12),('Mochila Laptop','Accesorios',40),('Microfono Condensador','Audio',110),('Power Bank','Accesorios',30),
+('Smartwatch Fit','Wearables',199),('Gabinete Gamer','Componentes',120),('Fuente 750W','Componentes',85),('SSD 500GB','Almacenamiento',65),('Tarjeta Grafica','Componentes',450),
+('Procesador i7','Componentes',320),('Memoria RAM 16GB','Componentes',75),('Placa Base Z690','Componentes',210),('Cooler Liquido','Componentes',130),('Mousepad XL','Accesorios',20),
+('Joystick PS5','Gaming',70),('Consola Mini','Gaming',100),('Lector SD','Accesorios',15),('Micro SD 128GB','Almacenamiento',28),('Cable USB-C','Cables',10),
+('Adaptador VGA','Cables',18),('Hub USB 3.0','Accesorios',35),('Repetidor WiFi','Redes',45),('Audifonos Gamer','Audio',85),('Soporte Monitor','Oficina',55),
+('Escritorio Gamer','Muebles',450),('Silla Pro Racing','Muebles',280),('Kit Limpieza','Mantenimiento',12),('Pasta Termica','Mantenimiento',8),('Webcam 4K','Video',150),
+('Luz Anillo Selfie','Hogar',25),('Cargador Carga Rapida','Accesorios',22),('Bateria UPS','Energia',140),('Protector Voltaje','Energia',18),('Mini Proyector','Video',115);
